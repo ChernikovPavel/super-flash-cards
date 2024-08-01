@@ -1,0 +1,54 @@
+1) Чтение. Функция чтения директории считывает наименования файлов в папке topics и возвращает массив объектов:
+
+```javascript
+dirGrabber() //возвразает объект:
+
+  [
+    { name: 'nighthawk', value: 'nighthawk_flashcard_data.txt' },
+    { name: 'otter', value: 'otter_flashcard_data.txt' },
+    { name: 'raccoon', value: 'raccoon_flashcard_data.txt' },
+  ]
+
+```
+
+  Функция чтения файла считывает файл и возвращает массив объектов:
+```javascript
+fileName = 'otter_flashcard_data.txt'
+fileGrabber(fileName) //возвразает объект:
+
+  [
+        {
+        type: 'input', name: 'q1', 
+        message: 'Какой-то вопрос, который видит пользователь', 
+        ...stylePrefixBlue, ...styleSuffix, ...rightOrNot
+        },
+
+        {type: 'input', name: 'q2', 
+        message: 'Какой-то вопрос, который видит пользователь', 
+         ...stylePrefixBlue, ...styleSuffix, ...rightOrNot
+        },
+
+  ]
+
+```
+
+
+2) inquirer 
+  ну тут всем все понятно
+
+
+3) отдельные микрофункции
+   1) функция проверки ответа
+    Принимает объект с различными ключами и значениями типа 'правильно' и 'неправильно' (буквально)
+```javascript   
+    {
+        q1: 'правильно',
+        q2: 'неправильно',
+        q3: 'правильно'
+    }
+    answersCounter(answers)//2
+```
+    необходимо посчитать и вернуть количеств значений 'правильно'
+
+
+4) Датабазы. Ну тут тоже всем все понятно
