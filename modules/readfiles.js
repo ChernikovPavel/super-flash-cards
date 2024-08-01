@@ -1,6 +1,6 @@
 const fs = require("fs").promises;
 
-const path = "./topics/";
+const path = "./topics/"; // !!!
 
 // dirGrabber() //возвразает объект:
 
@@ -27,4 +27,24 @@ async function dirGrabber(path) {
   }
 }
 
-module.exports = { dirGrabber };
+// const data = { 1: "5", 2: "5", 3: "5", 4: "2", 5: '5' };
+// const rightAnswer = "5";
+
+function calcAnswers(data, rightAnswer) {
+  const answersValues = Object.values(data);
+  const rightAnswersQuantity = answersValues.reduce((sum, answer) => {
+    if (answer === rightAnswer) {
+      sum += 1;
+    }
+
+    return sum;
+  }, 0);
+
+  const middleScore = rightAnswersQuantity / answersValues.length;
+
+  return Number.isInteger(middleScore) ? middleScore : middleScore.toFixed(1);
+}
+
+// console.log(calcAnswers(data, rightAnswer));
+
+module.exports = { dirGrabber, calcAnswers };
