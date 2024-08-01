@@ -10,11 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "inquirer": "^10.1.6",
     "readline-sync": "^1.4.10"
   },
   "devDependencies": {
     "eslint": "^8.23.0",
-    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0"
   }
 }
