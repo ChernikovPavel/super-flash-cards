@@ -1,7 +1,10 @@
 const fs = require('fs').promises;
 const { log } = require('console');
 const { EOL } = require('os');
-
+const stylePrefixBlue = { prefix: '\x1b[34m' }; //                                         prettier-ignore
+const stylePrefixGray = { prefix: '\x1b[90m' }; //                                         prettier-ignore
+const styleSuffix =     { suffix: '\x1b[0m' }; //                                          prettier-ignore
+const styleSuffixEOL =  { suffix: '\x1b[0m' + EOL }; //                                    prettier-ignore
 
 async function readFile(readPath) {
   try {
