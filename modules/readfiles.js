@@ -1,6 +1,6 @@
-const fs = require("fs").promises;
+const fs = require('fs').promises;
 
-const path = "./topics/"; // !!!
+const path = './topics/'; // !!!
 
 // dirGrabber() //возвразает объект:
 
@@ -12,39 +12,44 @@ const path = "./topics/"; // !!!
 
 async function dirGrabber(path) {
   try {
-    const dirData = await fs.readdir(path);
+    const dirData = await fs
+      .readdir(path)
+      .then((el) => el.filter((el) => /(_flashcard_data)(\.txt)/gm.test(el)));
     // console.log(dirData);
-    const themes = dirData.map((str) => str.split("_")[0]);
+    const themes = dirData.map((str) => str.split('_')[0]);
     // console.log(themes);
     const resultArray = [];
     for (let i = 0; i < dirData.length; i += 1) {
       resultArray.push({ name: themes[i], value: dirData[i] });
     }
-    // console.log(resultArray);
+
     return resultArray;
   } catch (error) {
-    console.error("Error in reading dir");
+    console.error('Error in reading dir');
   }
 }
 
-// const data = { 1: "5", 2: "5", 3: "5", 4: "2", 5: '5' };
-// const rightAnswer = "5";
+// const data = { 1: '5', 2: '5', 3: '5', 4: '5', 5: '5' };
+// const rightMsg = '5';
 
-function calcAnswers(data, rightAnswer) {
+function calcAnswers(data) {
   const answersValues = Object.values(data);
-  const rightAnswersQuantity = answersValues.reduce((sum, answer) => {
-    if (answer === rightAnswer) {
-      sum += 1;
-    }
-
-    return sum;
-  }, 0);
+  const rightAnswersQuantity = answersValues.reduce(
+    (sum, answer) => Number(answer === rightMsg) + sum,
+    0
+  );
 
   const middleScore = rightAnswersQuantity / answersValues.length;
 
-  return Number.isInteger(middleScore) ? middleScore : middleScore.toFixed(1);
+  return {
+    sumRightAnswers: rightAnswersQuantity,
+    allAnswers: answersValues.length,
+    percentage: Number.isInteger(middleScore)
+      ? middleScore
+      : middleScore.toFixed(1),
+  };
 }
 
-// console.log(calcAnswers(data, rightAnswer));
+console.log(calcAnswers(data));
 
 module.exports = { dirGrabber, calcAnswers };
