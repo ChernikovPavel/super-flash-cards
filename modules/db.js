@@ -16,7 +16,7 @@ class DataBase {
       }
       return -1; //этот ретурн отработает только тогда, когда первый ретурн не сработал(после ретурнов жизни нет)
     } catch (error) {
-      console.log("    Ошибка!    \r\n\r\n", error);
+      return -2;
     } finally {
       console.log("\x1b[0m"); // демаскирует остальное
     }
@@ -32,19 +32,19 @@ class DataBase {
         return -1;
       }
     } catch (error) {
-      console.log("    Ошибка!    \r\n\r\n", error);
+      return -2;
     } finally {
       console.log("\x1b[0m");
     }
   } //4 (id пользователя)
 
-  static async newScore(ID, currentScore) {
+  static async newScore(id) {
     try {
-      const scoreCreate = await Core.Create.findByPk({
-        attributes: ["ID", "currentScore"],
-      });
+      const scoreCreate = await Score.create({ login, password });
+       
+      
     } catch (error) {
-      console.log("    Ошибка!    \r\n\r\n", error);
+      return -2;
     } 
   } //100  (очки пользователя)
 
@@ -53,6 +53,6 @@ class DataBase {
   } //500 (самый высокий счет)
 }
 // DataBase.regFunc('1','1').then(console.log)
-DataBase.logFunc('2','2').then(console.log)
-
+// DataBase.logFunc('2','2').then(console.log)
+DataBase.logFunc('1').then(console.log)
 module.exports = DataBase;
