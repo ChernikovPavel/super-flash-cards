@@ -1,5 +1,11 @@
-const fs = require("fs").promises;
-const path = "./topics/"; // !!!
+const fs = require('fs').promises;
+const inquirer = require('inquirer');
+const { EOL } = require('os');
+const stylePrefixBlueScreen = { prefix: ' \x1b[44m\x1b[35m' }; //                                prettier-ignore
+const styleSuffixEOL =        { suffix: '\x1b[0m' + EOL }; //                                    prettier-ignore
+const rightMsg = "\x1b[42m" + '                                правильно!                                ' + '\x1b[0m' //prettier-ignore
+const falseMsg = '\x1b[41m' + '                               неправильно!                               ' + "\x1b[0m" //prettier-ignore
+
 
 class Grabber {
   constructor() {}
@@ -10,7 +16,7 @@ class Grabber {
       const dirData = await fs
         .readdir(path)
         .then((el) => el.filter((el) => /(_flashcard_data)(\.txt)/gm.test(el)));
-      const themes = dirData.map((str) => str.split("_")[0]);
+      const themes = dirData.map((str) => str.split('_')[0]);
       const resultArray = [];
 
       for (let i = 0; i < dirData.length; i += 1) {
@@ -19,54 +25,54 @@ class Grabber {
 
       return resultArray;
     } catch (error) {
-      console.error("Error in reading dir");
+      console.error('Error in reading dir');
     }
   }
 
-  static calcAnswers(data) {
-    const answersValues = Object.values(data);
-    const rightAnswersQuantity = answersValues.reduce(
-      (sum, answer) => Number(answer === rightMsg) + sum,
-      0
-    );
-    const middleScore = rightAnswersQuantity / answersValues.length;
-    return {
-      sumRightAnswers: rightAnswersQuantity,
-      allAnswers: answersValues.length,
-      percentage: Number.isInteger(middleScore)
-        ? middleScore
-        : middleScore.toFixed(1),
-    };
-  }
-
-  // Принимает в качестве параметра строку типа "./topics/raccoon_flashcard_data.txt"
-  static async fileGrabber(fileNameWithDir) {
+  // Принимает в качестве параметра строку типа "raccoon_flashcard_data.txt"
+  static async fileGrabber(fileName, path = './topics/') {
     try {
-      const fileData = await fs.readFile(fileNameWithDir, "utf-8");
-      const dirtyArray = fileData.split("\n");
+      const fileData = await fs.readFile(path + fileName, 'utf-8');
+      const dirtyArray = fileData.split(EOL);
       const answerObjectsArray = [];
-      for (let i = 0; i < dirtyArray.length - 1; i += 3) {
+      for (let i = 0; i < dirtyArray.length - dirtyArray.length % 2; i += 3) {
         let message = dirtyArray[i];
-        let rightAnswers = dirtyArray[i + 1].split("; ");
+        while(message.length < 73) { message += ' '}
+
+        const rightAnswers = dirtyArray[i + 1].split('; ');
         answerObjectsArray.push({
-          type: "input",
+          type: 'input',
           name: `q${i + 1}`,
-          message: message,
-          ...stylePrefixBlue,
-          ...styleSuffix,
-          filter: (userAnswer) => {
-            return rightAnswers.includes(userAnswer.toLowerCase())
-              ? rightMsg
-              : falseMsg;
+          message,
+          ...stylePrefixBlueScreen,
+          ...styleSuffixEOL,
+          filter: (userAnswer = null) => {
+            return  `${rightAnswers}`.includes(userAnswer.toLowerCase()) && userAnswer !== '' ? rightMsg : falseMsg;
           },
         });
       }
 
-      return resultObject;
+      return answerObjectsArray;
     } catch (error) {
-      console.error("Error in reading file");
+      console.error(error);
     }
   }
 }
 
+
+async function runner() {
+inquirer.prompt({
+  type: 'list',
+  name: 'q1',
+  message: 'choose',
+  choices: (async () => await Grabber.dirGrabber(path))
+})
+}
+
+async function runner2() {
+  const someq = await Grabber.fileGrabber('nighthawk_flashcard_data.txt');
+  
+// console.dir(someq);
+  inquirer.prompt(someq);
+}
 module.exports = Grabber;
