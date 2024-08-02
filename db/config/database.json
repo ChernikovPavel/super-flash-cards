@@ -1,7 +1,7 @@
 {
   "development": {
-    "username": "main",
-    "password": "123",
+    "username": "postgres",
+    "password": "1",
     "database": "flash-cards",
     "host": "127.0.0.1",
     "dialect": "postgres"

@@ -1,4 +1,6 @@
 my.js
+
+db/config/database.json
 # Logs
 logs
 *.log
