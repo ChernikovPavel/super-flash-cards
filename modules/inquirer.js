@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const { EOL } = require('os');
-const { dirGrabber, calcAnswers } = require('./readfiles')
+const { dirGrabber, calcAnswers } = require('./readfiles');
+const { regFunc, logFunc, newScore, hiScore } = require('./db');
 const stylePrefixBlue =       { prefix: '\x1b[34m' }; //                                         prettier-ignore
 const stylePrefixGray =       { prefix: '\x1b[90m' }; //                                         prettier-ignore
 const stylePrefixMagenta =    { prefix: '\x1b[35m' }; //                                         prettier-ignore
@@ -11,16 +12,15 @@ const styleSuffixEOL =        { suffix: '\x1b[0m' + EOL }; //                   
 
 const stylePrefixTest =       { prefix: ' \x1b[44m\x1b[35m' }; //                                prettier-ignore
 
-const rightMsg = "\x1b[42m" + '                                правильно!                                ' + '\x1b[0m' //prettier-ignore
-const falseMsg = '\x1b[41m' + '                                неправильно                               ' + "\x1b[0m" //prettier-ignore
+const rightMsg = '\x1b[42m' + '                                правильно!                                ' + '\x1b[0m' //prettier-ignore
+const falseMsg = '\x1b[41m' + '                                неправильно                               ' + '\x1b[0m' //prettier-ignore
 
 rightAnswer = 'a';
 
-const metaTable = {}
-
+const metaTable = {};
 
 const RigthOrNot = (userAnswer) => {
-  return userAnswer === rightAnswer ? rightMsg : falseMsg;
+  return userAnswer in rightAnswer ? rightMsg : falseMsg;
 };
 
 async function tester() {
@@ -45,21 +45,59 @@ async function tester() {
   ]);
 }
 
+async function logFuncInq() {
+  console.log();
+  while (!(metaTable.userID > 0)) {
+    console.clear();
+    switch (metaTable.userID) {
+      case -1:
+        console.log(' \x1b[31m%s\x1b[0m', 'Неверный логин или пароль!');
+        break;
+      case -2:
+        console.log(' \x1b[41m%s\x1b[0m', ' ОШИБКА ПОДКЛЮЧЕНИЯ! ');
+        break;
+        case 'default':
+        console.log(stylePrefixBlue.prefix, 'форма входа');
+    }
+    await inquirer
+      .prompt([
+        {
+          type: 'input',
+          name: 'login',
+          message: 'login:',
+          ...styleSuffixEOL,
+          ...stylePrefixGray,
+        },
+        {
+          type: 'password',
+          name: 'password',
+          message: 'password:',
+          ...styleSuffixEOL,
+          ...stylePrefixGray,
+          mask: '*',
+        },
+      ])
+      .then(({ login, password }) => logFunc(login, password))
+      .then((answer) => (metaTable.userID = answer));
+  }
+}
 
-(async () => {
-  await inquirer.prompt(
+// async function logFuncInq() {
+//   console.log();
+//   while (!(metaTable.userID > 0)) {
+//     console.clear();
+//     switch (metaTable.userID) {
+//       case -1:
+//         console.log(' \x1b[31m%s\x1b[0m', 'Неверный логин или пароль!');
+//         break;
+//       case -2:
+//         console.log(' \x1b[41m%s\x1b[0m', ' ОШИБКА ПОДКЛЮЧЕНИЯ! ');
+//         break;
+//         case 'default':
+//         console.log(stylePrefixBlue.prefix, 'форма входа');
+//     }
 
-    {
-      type: 'list',
-      name: 'regOrLog',
-      message: 'Добро пожаловать в игру',
-      choices: await dirGrabber("./topics/"),
-      ...stylePrefixBlue,
-      ...styleSuffix,
-    },
-    
-  );
-})
+// }
 
 
 async function greetings() {
@@ -83,11 +121,11 @@ async function greetings() {
 
     switch (metaTable.regOrLog) {
       case false: // вход
-        await logFunc();
+        await logFuncInq();
         break;
 
       case true: // регистрация
-        await regFunc();
+        await regFuncInq();
         break;
     }
     await newScore();
@@ -96,4 +134,4 @@ async function greetings() {
   }
 }
 
-
+greetings()
