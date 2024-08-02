@@ -1,0 +1,39 @@
+// скопировать этот файл в папку репозитории 
+// потом:
+
+//  npm i pg pg-hstore sequelize
+//  npm i -D sequelize-cli
+//  npx sequelize-cli init
+
+//  Создаем модель (Пример)
+//  npx sequelize model:generate --name Group --attributes name:string,classroom:integer
+//  npx sequelize model:generate --name Student --attributes firstname:string,lastname:string,age:string,groupId:integer
+
+//  Миграция
+//  npx sequelize db:migrate
+
+
+
+//  Создание сидов(Пример)
+//  npx sequelize seed:generate --name Group
+//  npx sequelize seed:generate --name Student
+
+//  миграция сидов
+//  npx sequelize db:seed:all
+
+//  откат миграции (нужно делать каждый раз перед тем, как делать миграцию)
+//  npx sequelize db:migrate:undo:all
+
+
+
+
+
+// require('dotenv').config()
+const path = require('path')
+
+module.exports = {
+  'config': path.resolve('db', 'config', 'database.json'),
+  'models-path': path.resolve('db', 'models'),
+  'seeders-path': path.resolve('db', 'seeders'),
+  'migrations-path': path.resolve('db', 'migrations'),
+}
