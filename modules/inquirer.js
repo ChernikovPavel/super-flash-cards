@@ -54,6 +54,7 @@ async function logFuncInq() {
       .then(({ login, password }) => logFunc(login, password))
       .then((answer) => (metaTable.userID = answer));
   }
+  return metaTable.userID
 }
 
 async function regFuncInq() {
@@ -91,6 +92,7 @@ async function regFuncInq() {
       .then(({ login, password }) => regFunc(login, password))
       .then((answer) => (metaTable.userID = answer));
   }
+  return metaTable.userID
 }
 
 
@@ -132,5 +134,8 @@ return metaTable
 async function inqRunner(){
   greetings()
 }
+
+
+
 
 module.exports = {regFuncInq, logFuncInq}

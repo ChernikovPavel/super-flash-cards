@@ -4,11 +4,27 @@ const inquirer = require('inquirer');
 const { EOL } = require('os');
 const stylePrefixBlueScreen = { prefix: ' \x1b[44m\x1b[35m' }; //                                prettier-ignore
 const styleSuffixEOL =        { suffix: '\x1b[0m' + EOL }; //                                    prettier-ignore
-const rightMsg = "\x1b[42m" + '                                правильно!                                ' + '\x1b[0m' //prettier-ignore
-const falseMsg = '\x1b[41m' + '                               неправильно!                               ' + "\x1b[0m" //prettier-ignore
+const rightMsg = "\x1b[42m" + '                                  правильно!                                   ' + '\x1b[0m' //prettier-ignore
+const falseMsg = '\x1b[41m' + '                                 неправильно!                                  ' + "\x1b[0m" //prettier-ignore
 
 class Grabber {
   constructor() {}
+
+  static calcAnswers(data) {
+    const answersValues = Object.values(data);
+    const rightAnswersQuantity = answersValues.reduce(
+      (sum, answer) => Number(answer === rightMsg) + sum,
+      0
+    );
+    const middleScore = rightAnswersQuantity / answersValues.length;
+    return {
+      sumRightAnswers: rightAnswersQuantity,
+      allAnswers: answersValues.length,
+      percentage: Number.isInteger(middleScore)
+        ? middleScore
+        : middleScore.toFixed(1),
+    };
+  }
 
   // Принимает в качестве параметра строку типа "./topics/"
   static async dirGrabber(path = './topics/') {
@@ -33,11 +49,14 @@ class Grabber {
   static async fileGrabber(fileName, path = './topics/') {
     try {
       const fileData = await fs.readFile(path + fileName, 'utf-8');
+      if(fileData.length > 73) {
+
+      }
       const dirtyArray = fileData.split(EOL);
       const answerObjectsArray = [];
       for (let i = 0; i < dirtyArray.length - dirtyArray.length % 2; i += 3) {
         let message = dirtyArray[i];
-        while(message.length < 73) { message += ' '}
+        while(message.length < 78) { message += ' '}
 
         const rightAnswers = dirtyArray[i + 1].split('; ');
         answerObjectsArray.push({

@@ -1,5 +1,5 @@
 const { regFunc, logFunc, newScore, hiScore } = require('./modules/db');
-const { dirGrabber, fileGrabber } = require('./modules/readfiles');
+const { dirGrabber, fileGrabber, calcAnswers} = require('./modules/readfiles');
 const inqRunner = require('./modules/inquirer');
 const {regFuncInq, logFuncInq} = require('./modules/inquirer')
 const inquirer = require('inquirer');
@@ -9,7 +9,6 @@ const stylePrefixBlue =       { prefix: '\x1b[34m' }; //                        
 
 
 const styleSuffix =           { suffix: '\x1b[0m' }; //                                          prettier-ignore
-
 
 
 async function greetings() {
@@ -33,11 +32,11 @@ async function greetings() {
   
       switch (metaTable.regOrLog) {
         case false: // вход
-          await logFuncInq();
+        metaTable.userID = await logFuncInq();
           break;
   
         case true: // регистрация
-          await regFuncInq();
+        metaTable.userID = await regFuncInq();
           break;
       }
 
@@ -61,10 +60,10 @@ try {
 async function quotes(){
     console.clear();
 try {
-    const someq = await fileGrabber(metaTable.fileName);
+    const quoteName = await fileGrabber(metaTable.fileName);
   
     // console.dir(someq);
-      inquirer.prompt(someq);
+     await inquirer.prompt(quoteName).then(calcAnswers).then((a) => metaTable.ans = a.sumRightAnswers);
 
 } catch (error) {
     console.log(error);
@@ -77,6 +76,8 @@ try {
     await greetings()
     await ListOfAuotes()
     await quotes()
+    await newScore(metaTable.userID, metaTable.ans)
+    console.log(metaTable);
 } catch (error) {
     console.log('runner err');
 }    
