@@ -7,7 +7,6 @@ const styleSuffixEOL =        { suffix: '\x1b[0m' + EOL }; //                   
 const rightMsg = "\x1b[42m" + '                                правильно!                                ' + '\x1b[0m' //prettier-ignore
 const falseMsg = '\x1b[41m' + '                               неправильно!                               ' + "\x1b[0m" //prettier-ignore
 
-
 class Grabber {
   constructor() {}
 
@@ -76,4 +75,5 @@ async function runner2() {
 // console.dir(someq);
   inquirer.prompt(someq);
 }
+
 module.exports = Grabber;

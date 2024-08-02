@@ -26,6 +26,7 @@ class DataBase {
     try {
       console.log("\x1b[8m");
       const user = await User.findOne({ where: { login, password } });
+      console.clear();
       if (user) {
         return user.id;
       } else {
