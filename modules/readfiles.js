@@ -1,15 +1,16 @@
-const fs = require('fs').promises;
-const path = './topics/'; // !!!
+const fs = require("fs").promises;
+const path = "./topics/"; // !!!
 
 class Grabber {
   constructor() {}
 
+  // Принимает в качестве параметра строку типа "./topics/"
   static async dirGrabber(path) {
     try {
       const dirData = await fs
         .readdir(path)
         .then((el) => el.filter((el) => /(_flashcard_data)(\.txt)/gm.test(el)));
-      const themes = dirData.map((str) => str.split('_')[0]);
+      const themes = dirData.map((str) => str.split("_")[0]);
       const resultArray = [];
 
       for (let i = 0; i < dirData.length; i += 1) {
@@ -18,7 +19,7 @@ class Grabber {
 
       return resultArray;
     } catch (error) {
-      console.error('Error in reading dir');
+      console.error("Error in reading dir");
     }
   }
 
@@ -36,6 +37,35 @@ class Grabber {
         ? middleScore
         : middleScore.toFixed(1),
     };
+  }
+
+  // Принимает в качестве параметра строку типа "./topics/raccoon_flashcard_data.txt"
+  static async fileGrabber(fileNameWithDir) {
+    try {
+      const fileData = await fs.readFile(fileNameWithDir, "utf-8");
+      const dirtyArray = fileData.split("\n");
+      const answerObjectsArray = [];
+      for (let i = 0; i < dirtyArray.length - 1; i += 3) {
+        let message = dirtyArray[i];
+        let rightAnswers = dirtyArray[i + 1].split("; ");
+        answerObjectsArray.push({
+          type: "input",
+          name: `q${i + 1}`,
+          message: message,
+          ...stylePrefixBlue,
+          ...styleSuffix,
+          filter: (userAnswer) => {
+            return rightAnswers.includes(userAnswer.toLowerCase())
+              ? rightMsg
+              : falseMsg;
+          },
+        });
+      }
+
+      return resultObject;
+    } catch (error) {
+      console.error("Error in reading file");
+    }
   }
 }
 
