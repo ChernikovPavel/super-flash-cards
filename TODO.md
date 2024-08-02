@@ -71,8 +71,8 @@ fileGrabber(fileName) //возвразает объект:
     большой счёт с учетом принятого счёта и возвращает больший из них
 
 ```javascript 
-    regFunc(login, password) //4 (id пользователя)
-    logFunc(login, password) //4 //4 (id пользователя)
+    regFunc(login, password) //4 (id пользователя) (done)
+    logFunc(login, password) //4 (id пользователя)
     newScore(ID, currentScore)//100  (очки пользователя)
     hiScore(ID, currentScore) //500 (самый высокий счет)
 ```
