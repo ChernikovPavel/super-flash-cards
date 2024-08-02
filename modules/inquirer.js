@@ -122,7 +122,7 @@ async function greetings() {
         await regFuncInq();
         break;
     }
-
+return metaTable
   } catch (error) {
     console.log(error);
   }
@@ -132,5 +132,5 @@ async function greetings() {
 async function inqRunner(){
   greetings()
 }
-inqRunner()
-module.exports = inqRunner
+
+module.exports = {regFuncInq, logFuncInq}

@@ -11,7 +11,7 @@ class Grabber {
   constructor() {}
 
   // Принимает в качестве параметра строку типа "./topics/"
-  static async dirGrabber(path) {
+  static async dirGrabber(path = './topics/') {
     try {
       const dirData = await fs
         .readdir(path)
@@ -46,7 +46,7 @@ class Grabber {
           message,
           ...stylePrefixBlueScreen,
           ...styleSuffixEOL,
-          filter: (userAnswer = null) => {
+          filter: (userAnswer) => {
             return  `${rightAnswers}`.includes(userAnswer.toLowerCase()) && userAnswer !== '' ? rightMsg : falseMsg;
           },
         });
