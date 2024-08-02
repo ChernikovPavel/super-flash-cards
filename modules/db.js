@@ -38,21 +38,39 @@ class DataBase {
     }
   } //4 (id пользователя)
 
-  static async newScore(id) {
+  static async newScore(userID, currentScore) {
     try {
-      const scoreCreate = await Score.create({ login, password });
-       
-      
+      console.log("\x1b[8m");
+      const scoreCreate = await Score.create({ userID, score: currentScore });
+      return scoreCreate;
     } catch (error) {
       return -2;
-    } 
+    } finally {
+      console.log("\x1b[0m");
+    }
   } //100  (очки пользователя)
 
   static async hiScore(ID, currentScore) {
-    
+    try {
+      const scoreHigh = await Score.findAll();
+      let result = 0;
+      for (let i = 0; i < scoreHigh.length; i++) {
+        const numN = scoreHigh[i].dataValues.score;
+        if (numN > result) {
+          result = numN;
+        }
+      }
+      return result;
+    } catch (error) {
+      return -2;
+    } finally {
+      console.log("\x1b[0m");
+    }
   } //500 (самый высокий счет)
 }
 // DataBase.regFunc('1','1').then(console.log)
 // DataBase.logFunc('2','2').then(console.log)
+// DataBase.newScore('1', '100')
+// DataBase.hiScore("2").then(console.log);
 
 module.exports = DataBase;
