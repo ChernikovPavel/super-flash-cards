@@ -99,6 +99,22 @@ async function logFuncInq() {
 
 // }
 
+function calcAnswers(data) {
+  const answersValues = Object.values(data);
+  const rightAnswersQuantity = answersValues.reduce(
+    (sum, answer) => Number(answer === rightMsg) + sum,
+    0
+  );
+  const middleScore = rightAnswersQuantity / answersValues.length;
+  return {
+    sumRightAnswers: rightAnswersQuantity,
+    allAnswers: answersValues.length,
+    percentage: Number.isInteger(middleScore)
+      ? middleScore
+      : middleScore.toFixed(1),
+  };
+}
+
 
 async function greetings() {
   console.clear();
@@ -134,4 +150,8 @@ async function greetings() {
   }
 }
 
-greetings()
+
+async function inqRunner(){
+  greetings()
+}
+module.exports = inqRunner
