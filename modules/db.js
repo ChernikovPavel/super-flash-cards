@@ -54,5 +54,5 @@ class DataBase {
 }
 // DataBase.regFunc('1','1').then(console.log)
 // DataBase.logFunc('2','2').then(console.log)
-DataBase.logFunc('1').then(console.log)
+
 module.exports = DataBase;
