@@ -18,6 +18,7 @@ class DataBase {
     } catch (error) {
       return -2;
     } finally {
+      console.clear();
       console.log("\x1b[0m"); // демаскирует остальное
     }
   }
@@ -35,7 +36,8 @@ class DataBase {
     } catch (error) {
       return -2;
     } finally {
-      console.log("\x1b[0m");
+      console.clear();
+      console.log("\x1b[0m"); // демаскирует остальное
     }
   } //4 (id пользователя)
 
@@ -47,7 +49,8 @@ class DataBase {
     } catch (error) {
       return -2;
     } finally {
-      console.log("\x1b[0m");
+      console.clear();
+      console.log("\x1b[0m"); // демаскирует остальное
     }
   } //100  (очки пользователя)
 
@@ -65,7 +68,8 @@ class DataBase {
     } catch (error) {
       return -2;
     } finally {
-      console.log("\x1b[0m");
+      console.clear();
+      console.log("\x1b[0m"); // демаскирует остальное
     }
   } //500 (самый высокий счет)
 }

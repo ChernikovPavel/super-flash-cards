@@ -77,7 +77,11 @@ try {
     await ListOfAuotes()
     await quotes()
     await newScore(metaTable.userID, metaTable.ans)
-    console.log(metaTable);
+    await hiScore(metaTable.userID, metaTable.ans)
+    .then((hi) => {
+        console.clear();
+        console.log('\x1b[35m                   ' + `текущий счет: ${metaTable.ans} рекорд: ${hi}` + '\x1b[0m')})
+
 } catch (error) {
     console.log('runner err');
 }    
